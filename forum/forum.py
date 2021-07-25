@@ -1,14 +1,10 @@
 from flask import *
-#from flask.ext.login import LoginManager, login_required, current_user, logout_user, login_user
 from flask_login import LoginManager, current_user, login_user, logout_user
 import datetime
-import sys
-
 from flask_login.utils import login_required
 from sqlalchemy.sql.elements import Null
 from forum.app import app
 from flask_sqlalchemy import SQLAlchemy
-
 from flask_login import UserMixin
 import re
 import datetime
@@ -216,7 +212,7 @@ def action_post():
 	user = current_user
 	title = request.form['title']
 	content = request.form['content']
-	private = request.form['private']
+	# private = request.form['private']
 
 	# replaces key word with emoji
 	if '*wink*' in content or '*wink*' in title:
@@ -232,8 +228,6 @@ def action_post():
 		content = content.replace('*spooky*', '\U0001F47B')
 		title = title.replace('*spooky*', '\U0001F47B')
 	
-
-
 	#check for valid posting
 	errors = []
 	retry = False
@@ -411,17 +405,8 @@ def generateLinkPath(subforumid):
 	return link
 
 
-#from forum.app import db, app 
-
-
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-# if __name__ == "__main__":
-# 	#runsetup()
-# 	port = int(os.environ["PORT"])
-# 	app.run(host='0.0.0.0', port=port, debug=True)
-
 
 
 #DATABASE STUFF
@@ -638,50 +623,8 @@ def add_subforum(title, description, parent=None):
 	print("adding " + title)
 	db.session.commit()
 	return sub
-"""
-def interpret_site_value(subforumstr):
-	segments = subforumstr.split(':')
-	identifier = segments[0]
-	description = segments[1]
-	parents = []
-	hasparents = False
-	while('.' in identifier):
-		hasparents = True
-		dotindex = identifier.index('.')
-		parents.append(identifier[0:dotindex])
-		identifier = identifier[dotindex + 1:]
-	if hasparents:
-		directparent = subforum_from_parent_array(parents)
-		if directparent is None:
-			print(identifier + " could not find parents")
-		else:
-			add_subforum(identifier, description, directparent)
-	else:
-		add_subforum(identifier, description)
 
-def subforum_from_parent_array(parents):
-	subforums = Subforum.query.filter(Subforum.parent_id == None).all()
-	top_parent = parents[0]
-	parents = parents[1::]
-	for subforum in subforums:
-		if subforum.title == top_parent:
-			cur = subforum
-			for parent in parents:
-				for child in subforum.subforums:
-					if child.title == parent:
-						cur = child
-			return cur
-	return None
-
-
-def setup():
-	siteconfig = open('./config/subforums', 'r')
-	for value in siteconfig:
-		interpret_site_value(value)
-"""
-#db.drop_all()
 
 db.create_all()
 if not Subforum.query.all():
 		init_site()
-
