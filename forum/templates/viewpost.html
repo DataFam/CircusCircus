@@ -28,8 +28,6 @@
 </div>
 <div style="text-align: center;">
 
-	
-
 	{% if current_user.is_authenticated %}
 	<input type="button" id="displayaddcomment" onclick="toggle()" value="Add a comment">
 
@@ -47,8 +45,7 @@
 			(<span  {% if comment.user.admin %} style="color: red;" {% endif %}>{{ comment.user.username }}</span>) - 
 		</div>
 		<div class="commentcontent">
-	
-			
+		
 			{{ comment.content }}
 		</div>
 		
@@ -79,9 +76,7 @@
 		<div class="commentuser">
 			(<span  {% if subcomment.user.admin %} style="color: red;" {% endif %}>{{ subcomment.user.username }}</span>) - 
 		</div>
-		<div class="commentcontent">
-	
-			
+		<div class="commentcontent">		
 			{{ subcomment.content }}
 		</div>
 		
@@ -98,11 +93,9 @@
 			(<span  {% if comment.user.admin %} style="color: red;" {% endif %}>{{ comment.user.username }}</span>) - 
 		</div>
 		<div class="commentcontent">
-	
 			
 			{{ comment.content }}
 		</div>
-		
 		
 		<div class="commenttime">
 			{{ comment.get_time_string() }}
