@@ -22,7 +22,7 @@
 }
 .content{
 	margin-top: 0.5%;
-	height: 82vh;
+	min-height: 84vh;
 }
 .login{
 	width: 25%;
