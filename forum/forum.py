@@ -370,6 +370,8 @@ def action_changepassword():
 	errors = []
 	retry = True
 	input_current_password = request.form['current_password']
+	new_password = request.form['new_password']
+	check_new_password= request.form['check_new_password']
 	if current_user.check_password(input_current_password):
 		new_password = request.form['new_password']
 		new_password_hash = generate_password_hash(new_password)
@@ -380,10 +382,15 @@ def action_changepassword():
 		errors.append("Incorrect current password!")
 		return render_template("userinfo.html", errors=errors)
 
-	new_password = request.form['new_password']
-	new_password_hash = generate_password_hash(new_password)
-	db.session.query(User).filter(User.id == id1).update({"password_hash": new_password_hash}, synchronize_session="fetch")
-	db.session.commit()
+	retry = True
+	if new_password == check_new_password:
+		retry = False
+		new_password_hash = generate_password_hash(new_password)
+		db.session.query(User).filter(User.id == id1).update({"password_hash": new_password_hash}, synchronize_session="fetch")
+		db.session.commit()
+	if retry:
+		errors.append("Passwords do not match!")
+		return render_template("userinfo.html", errors=errors)
 	
 	return redirect('/userinfo')
 #chuck stuff end
