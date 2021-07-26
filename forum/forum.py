@@ -373,10 +373,6 @@ def action_changepassword():
 	new_password = request.form['new_password']
 	check_new_password= request.form['check_new_password']
 	if current_user.check_password(input_current_password):
-		new_password = request.form['new_password']
-		new_password_hash = generate_password_hash(new_password)
-		db.session.query(User).filter(User.id == id1).update({"password_hash": new_password_hash}, synchronize_session="fetch")
-		db.session.commit()
 		retry=False
 	if retry:
 		errors.append("Incorrect current password!")
